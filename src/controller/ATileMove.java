@@ -8,8 +8,8 @@ import java.awt.Point;
  * two cells to the right.
  */
 public class ATileMove {
-    private Point curLoc, prvLoc;
-    private int curVal, prvVal;
+    private Point curLoc, prevLoc;
+    private int curVal, prevVal;
     private boolean merged, deleted;
 
     /**
@@ -20,8 +20,8 @@ public class ATileMove {
     public ATileMove(Point loc, int val) {
       curLoc = loc;
       curVal = val;
-      prvLoc = null;
-      prvVal = 0;
+      prevLoc = null;
+      prevVal = 0;
       merged = deleted = false;
     }
 
@@ -45,37 +45,37 @@ public class ATileMove {
      * Returns the previous location of this Tile.
      * @return The previous location of this Tile
      */
-    public Point getPrvLoc() {
-	return prvLoc;
+    public Point getPrevLoc() {
+	return prevLoc;
     }
 
     /**
      * Returns the previous value of this Tile.
      * @return The previous value of this Tile
      */
-    public int getPrvVal() {
-	return prvVal;
+    public int getPrevVal() {
+	return prevVal;
     }
 
     /**
      * Updates the current location of this Tile to the one provided.
-     * @param to The new location for this Tile.
+     * @param target The new location for this Tile.
      */
-    public void move(Point to) {
-      prvLoc = curLoc;
-      curLoc = new Point(to.x, to.y);
-      prvVal = curVal;
+    public void move(Point target) {
+      prevLoc = curLoc;
+      curLoc = new Point(target.x, target.y);
+      prevVal = curVal;
     }
 
     /**
      * Updates the current location and value of this Tile to the information provided and marks the Tile as being merged.
-     * @param to The new location of this Tile.
+     * @param target The new location of this Tile.
      * @param val The new value of this Tile.
      */
-    public void merge(Point to, int val) {
-      prvLoc = curLoc;
-      curLoc = new Point(to.x, to.y);
-      prvVal = curVal;
+    public void merge(Point target, int val) {
+      prevLoc = curLoc;
+      curLoc = new Point(target.x, target.y);
+      prevVal = curVal;
       curVal = val;
       merged = true;
     }
@@ -84,7 +84,7 @@ public class ATileMove {
      * Marks this Tile as being deleted.
      */
     public void delete() {
-      prvVal = curVal;
+      prevVal = curVal;
       curVal = 0;
       deleted = true;
     }
@@ -119,10 +119,10 @@ public class ATileMove {
       ATileMove that = (ATileMove) obj;
       if (this.curVal != that.curVal) return false;
       if (!this.curLoc.equals(that.curLoc)) return false;
-      if (this.prvVal != that.prvVal) return false;
-      if (this.prvLoc == null) {
-          if (that.prvLoc != null) return false;
-      } else if (!this.prvLoc.equals(that.prvLoc)) return false;
+      if (this.prevVal != that.prevVal) return false;
+      if (this.prevLoc == null) {
+          if (that.prevLoc != null) return false;
+      } else if (!this.prevLoc.equals(that.prevLoc)) return false;
       return true;
     }
 

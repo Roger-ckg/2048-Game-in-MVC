@@ -30,7 +30,7 @@ public class ViewTile extends JLabel {
 	setOpaque(true);
 	setSize(actSize);
 	if (font == null) font = (new ClearSansLoader()).importFont("Bold");
-	setStyle(val);	// sets the color and fontsize for this tile based on its value
+	setStyle(val);	// sets the color and font size for this tile based on its value
 	setAlignmentX(CENTER_ALIGNMENT);
 	setAlignmentY(CENTER_ALIGNMENT);
     }

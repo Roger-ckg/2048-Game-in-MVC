@@ -165,13 +165,13 @@ public class Board implements Serializable {
      * @return a list of all tiles on this board.
      */
     public List<ATileMove> getAllTiles() {
-      LinkedList<ATileMove> list = new LinkedList<ATileMove>();
+      LinkedList<ATileMove> tiles = new LinkedList<ATileMove>();
       for (int x = 0; x < width; x++)
           for (int y = 0; y < height; y++) {
             if (grid[x][y] == 0) continue;
-            list.add(new ATileMove(new Point(x, y), grid[x][y]));
+            tiles.add(new ATileMove(new Point(x, y), grid[x][y]));
           }
-      return list;
+      return tiles;
     }
 
     @Override

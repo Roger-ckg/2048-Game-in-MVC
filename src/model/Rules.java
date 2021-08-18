@@ -12,8 +12,8 @@ import controller.ATileMove;
  */
 public class Rules {
 
-    public final static int DFLT_WIDTH = 4, DFLT_HEIGHT = 4;
-    public final static int DFLT_STARTNUM = 2, DFLT_WINVALUE = 2048;
+    public final static int DEFAULT_WIDTH = 4, DEFAULT_HEIGHT = 4;
+    public final static int DEFAULT_STARTNUM = 1, DEFAULT_WINVALUE = 2048;
 
     /**
      * Doesn't allow anyone outside of this class to instantiate Rules.
@@ -28,7 +28,7 @@ public class Rules {
      * @return A list of all tile on the board.
      */
     public static List<ATileMove> startGame(Board board, int width, int height) {
-			if (width < DFLT_WIDTH || height < DFLT_HEIGHT) throw new IllegalArgumentException();
+			if (width < DEFAULT_WIDTH || height < DEFAULT_HEIGHT) throw new IllegalArgumentException();
 			board.setSize(width, height);
 			board.setScore(0);
 			board.setHighScore(0);
@@ -46,7 +46,7 @@ public class Rules {
      * @return A list of all tile on the board.
      */
     public static List<ATileMove> restartGame(Board board, int width, int height) {
-			if (width < DFLT_WIDTH || height < DFLT_HEIGHT) throw new IllegalArgumentException();
+			if (width < DEFAULT_WIDTH || height < DEFAULT_HEIGHT) throw new IllegalArgumentException();
 			board.setSize(width, height);
 			board.setScore(0);
 			board.setGameOver(false);
@@ -55,36 +55,36 @@ public class Rules {
     }
 
     private static List<ATileMove> addStartTiles(Board board) {
-			List<ATileMove> additions = new LinkedList<ATileMove>();
-			for (int i = 0; i < DFLT_STARTNUM; i++) {
-					ATileMove tmp = addRandomTile(board);
-					if (tmp != null) additions.add(tmp);
+			List<ATileMove> startTiles = new LinkedList<ATileMove>();
+			for (int i = 0; i < DEFAULT_STARTNUM; i++) {
+					ATileMove newTile = addRandomTile(board);
+					if (newTile != null) startTiles.add(newTile);
 			}
-			return additions;
+			return startTiles;
     }
 
     private static ATileMove addRandomTile(Board board) {
-			ATileMove tile = null;
+			ATileMove newTile = null;
 			if (cellsAvailable(board)) {
-					Point cell = randomAvailCell(board);
-					board.setCell(cell, Math.random() < 0.9 ? 2 : 4);
-					tile = new ATileMove(cell, board.valueAt(cell));
+					Point cell = randomAvailableCell(board);
+					board.setCell(cell, 2);
+					newTile = new ATileMove(cell, board.valueAt(cell));
 			}
-			return tile;
+			return newTile;
     }
 
-    private static Point randomAvailCell(Board board) {
+    private static Point randomAvailableCell(Board board) {
 			List<Point> cells = availableCells(board);
 			if (!cells.isEmpty()) return cells.get((int) Math.floor(Math.random() * cells.size()));
 			return null;
     }
 
     private static List<Point> availableCells(Board board) {
-			List<Point> locs = new LinkedList<Point>();
+			List<Point> availableLocs = new LinkedList<Point>();
 			for (int x = 0; x < board.getWidth(); x++)
 					for (int y = 0; y < board.getHeight(); y++)
-				if (board.valueAt(x, y) == 0) locs.add(new Point(x, y));
-			return locs;
+				if (board.valueAt(x, y) == 0) availableLocs.add(new Point(x, y));
+			return availableLocs;
     }
 
     private static boolean cellsAvailable(Board board) {
@@ -104,15 +104,19 @@ public class Rules {
 			Point vector = getVector(d);
 			int[] xTraversal = getXTraversal(board, vector);
 			int[] yTraversal = getYTraversal(board, vector);
+
 			for (int x : xTraversal) {
 					for (int y : yTraversal) {
 				Point current = new Point(x, y);
+				// move the tiles with values towards the direction
 				if (board.valueAt(current) != 0) {
 						Point farthest, next = current;
 						do {
 					farthest = next;
 					next = new Point(farthest.x + vector.x, farthest.y + vector.y);
 						} while (board.isContained(next) && board.valueAt(next) == 0);
+
+						// merge two numbers
 						if (board.isContained(next) && board.valueAt(current) == board.valueAt(next) && canMerge(board, moves, next)) {// merge current & next position
 					ATileMove aMove = new ATileMove(current, board.valueAt(current));	// set initial position
 					aMove.merge(next, board.valueAt(current) * 2);	// set final position and value
@@ -122,8 +126,11 @@ public class Rules {
 					board.setScore(board.getScore() + board.valueAt(next));
 					board.setHighScore(board.getScore() > board.getHighScore() ? board.getScore() : board.getHighScore());
 					board.setCell(current, 0);
-					if (board.valueAt(next) == DFLT_WINVALUE) board.setGameWon(true);
-						} else if (current != farthest) {// no merge, just move current to the farthest position. Do nothing if this Tile cannot be moved.
+
+							if (board.valueAt(next) == DEFAULT_WINVALUE) board.setGameWon(true);
+
+							// no merge, just move current to the farthest position. Do nothing if this Tile cannot be moved.
+						} else if (current != farthest) {
 					ATileMove aMove = new ATileMove(current, board.valueAt(current));
 					aMove.move(farthest);
 					moves.add(aMove);
@@ -133,10 +140,12 @@ public class Rules {
 				}
 					}
 			}
+
 			if (!moves.isEmpty()) {
 					moves.add(addRandomTile(board));
 					if (!movesAvailable(board)) board.setGameOver(true);
 			}
+
 			return moves;
     }
 
@@ -185,9 +194,11 @@ public class Rules {
     private static int[] getYTraversal(Board board, Point vector) {
 			int height = board.getHeight();
 			int[] yTraversal = new int[height];
+			// if moving down, traverse from lower tiles
 			if (vector.y == 1) {
 					for (int i = 0; i < height; i++)
 				yTraversal[i] = height - 1 - i;
+			// if moving up, traverse from upper tiles
 			} else {
 					for (int i = 0; i < height; i++)
 				yTraversal[i] = i;
@@ -198,9 +209,11 @@ public class Rules {
     private static int[] getXTraversal(Board board, Point vector) {
 			int width = board.getWidth();
 			int[] xTraversal = new int[width];
+			// if moving right, traverse from tiles on the right
 			if (vector.x == 1) {
 					for (int i = 0; i < width; i++)
 				xTraversal[i] = width - 1 - i;
+			// if moving left, traverse from tiles on the left
 			} else {
 					for (int i = 0; i < width; i++)
 				xTraversal[i] = i;

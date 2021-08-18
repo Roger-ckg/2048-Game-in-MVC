@@ -14,9 +14,11 @@ public class Model implements ModelInterface {
     @Override
     public List<ATileMove> startGame() {
 			board = SaverLoader.loadGame();
+			// if no saved game state, start a new game with default width and height
 			if (board == null) {
 					board = new Board();
-					return Rules.startGame(board, Rules.DFLT_WIDTH, Rules.DFLT_HEIGHT);
+					return Rules.startGame(board, Rules.DEFAULT_WIDTH, Rules.DEFAULT_HEIGHT);
+			// if have saved game state, return the state
 			} else {
 					return board.getAllTiles();
 			}
@@ -29,7 +31,7 @@ public class Model implements ModelInterface {
 			try {
 					moves = Rules.startGame(board, width, height);
 			} catch (IllegalArgumentException e) { // if an exception is thrown due to bad width/height given, make the default board
-					moves = Rules.startGame(board, Rules.DFLT_WIDTH, Rules.DFLT_HEIGHT);
+					moves = Rules.startGame(board, Rules.DEFAULT_WIDTH, Rules.DEFAULT_HEIGHT);
 			}
 			return moves;
     }
@@ -40,7 +42,7 @@ public class Model implements ModelInterface {
 			try {
 					moves = Rules.restartGame(board, width, height);
 			} catch (IllegalArgumentException e) { // if an exception is thrown due to bad width/height given, make the default board
-					moves = Rules.restartGame(board, Rules.DFLT_WIDTH, Rules.DFLT_HEIGHT);
+					moves = Rules.restartGame(board, Rules.DEFAULT_WIDTH, Rules.DEFAULT_HEIGHT);
 			}
 			return moves;
     }
@@ -49,10 +51,8 @@ public class Model implements ModelInterface {
     public void endGame() {
 			if (board.isGameOver()) {
 					Rules.restartGame(board, board.getWidth(), board.getHeight());
-					SaverLoader.saveGame(board);
-			} else {
-					SaverLoader.saveGame(board);
 			}
+			SaverLoader.saveGame(board);
 			board = null;
     }
 

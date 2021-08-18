@@ -25,7 +25,7 @@ import controller.ControllerInterface;
 import controller.Direction;
 
 /**
- * Unit tests using JUnit to test the {@link ViewListener.java User Input Listener} of the game.
+ * Unit tests using JUnit to test the {@link ViewListener User Input Listener} of the game.
  */
 public class ViewListenerTest {
     private static FakeController cont;

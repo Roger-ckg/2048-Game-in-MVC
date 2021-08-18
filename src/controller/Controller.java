@@ -30,9 +30,13 @@ public class Controller implements ControllerInterface {
      */
     public Controller() {
 			model = new Model();
+			// get the values of the game board from either a new game or a saved game
 			moves = model.startGame();
+			// create a view board without values
 			view = new BasicGUI(model.getWidth(), model.getHeight(), this);
+			// add the values into the board
 			view.addTiles(moves);
+			// add the score and best score
 			view.showScore(model.getScore(), model.getHighScore());
     }
 

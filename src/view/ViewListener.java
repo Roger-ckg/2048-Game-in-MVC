@@ -20,11 +20,12 @@ import controller.ControllerInterface;
 import controller.Direction;
 
 /**
- * Listens for certain user actions in the Environment, primarily from the keyboard, then sends those actions to the controller of this game.
+ * Listens for certain user actions in the Environment, primarily from the keyboard and the mouse, and then sends those actions to the controller of this game.
  */
 public class ViewListener extends KeyAdapter implements MouseListener, ActionListener, ItemListener, WindowListener {
     private ControllerInterface controller;
     private Point drag_start;
+    private Point drag_end;
     private int nextBoardWidth;
     private int nextBoardHeight;
     private static final List<Integer> UP = Arrays.asList(KeyEvent.VK_UP, KeyEvent.VK_W);
@@ -78,7 +79,7 @@ public class ViewListener extends KeyAdapter implements MouseListener, ActionLis
     @Override
     public void mouseReleased(MouseEvent e) {
 	if (e.getButton() == MouseEvent.BUTTON1) {
-	    Point drag_end = e.getLocationOnScreen();
+	    drag_end = e.getLocationOnScreen();
 	    if (drag_end.distance(drag_start) > 20) {
 		int hor = drag_end.x - drag_start.x;
 		int vert = drag_end.y - drag_start.y;
@@ -125,7 +126,7 @@ public class ViewListener extends KeyAdapter implements MouseListener, ActionLis
      * @see java.awt.event.WindowListener#windowClosing(java.awt.event.WindowEvent)
      */
     @Override
-    public void windowClosing(WindowEvent arg0) {
+    public void windowClosing(WindowEvent arg) {
 	controller.endGame();
     }
 
@@ -134,7 +135,7 @@ public class ViewListener extends KeyAdapter implements MouseListener, ActionLis
      * @see java.awt.event.WindowListener#windowClosed(java.awt.event.WindowEvent)
      */
     @Override
-    public void windowClosed(WindowEvent arg0) {
+    public void windowClosed(WindowEvent arg) {
 	controller.endGame();
     }
 
@@ -148,18 +149,18 @@ public class ViewListener extends KeyAdapter implements MouseListener, ActionLis
     public void mouseExited(MouseEvent e) {}
 
     @Override
-    public void windowActivated(WindowEvent arg0) {}
+    public void windowActivated(WindowEvent arg) {}
 
     @Override
-    public void windowDeactivated(WindowEvent arg0) {}
+    public void windowDeactivated(WindowEvent arg) {}
 
     @Override
-    public void windowDeiconified(WindowEvent arg0) {}
+    public void windowDeiconified(WindowEvent arg) {}
 
     @Override
-    public void windowIconified(WindowEvent arg0) {}
+    public void windowIconified(WindowEvent arg) {}
 
     @Override
-    public void windowOpened(WindowEvent arg0) {}
+    public void windowOpened(WindowEvent arg) {}
 
 }

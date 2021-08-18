@@ -33,7 +33,8 @@ public class SaverLoader {
 					oos.close();
 					fos.close();
 			} catch (IOException e) {
-					// unable to save for some reason?
+				// unable to save for some reason
+				System.out.println("Game state saving failed!");
 			}
     }
 

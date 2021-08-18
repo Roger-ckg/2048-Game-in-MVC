@@ -17,16 +17,13 @@ import controller.ATileMove;
 public class ViewBoard extends JLayeredPane {
     private static final long serialVersionUID = 7704761091317274700L;
     private static final double borderWidthRatio = 6.88; // b.c. LoLz
-    private static final Integer GRIDLAYER = new Integer(1), TILELAYER = new Integer(2);
+    private static final Integer GRIDLAYER = 1, TILELAYER = 2;
     private int numTilesX, numTilesY;
     private int tileBorderV, tileBorderH;
     private int boardWidth = 0, boardHeight = 0;
 
     /**
      * Constructs this board with the given dimensions.
-     * @param numTilesX The number of horizontal tiles.
-     * @param numTilesY The number of vertical tiles.
-     * @param maxSize The maximum size that the board can be.
      */
     public ViewBoard() {
 	setBackground(new Color(187, 173, 160));
@@ -91,14 +88,12 @@ public class ViewBoard extends JLayeredPane {
 	if (boardWidth == 0 || boardHeight == 0) return false;
 	for (int x = 0; x < numTilesX; x++)
 	    for (int y = 0; y < numTilesY; y++)
-		add(new ViewTile(0, coord2Point(new Point(x, y))), GRIDLAYER);
+		add(new ViewTile(0, coordinateToPoint(new Point(x, y))), GRIDLAYER);
 	return true;
     }
 
     /**
      * Removes all tiles from this board, then re-makes it with the new dimensions.
-     * @param numTilesX The number of horizontal tiles.
-     * @param numTilesY The number of vertical tiles.
      */
     public void resetBoard() {
 	removeAll();
@@ -113,16 +108,16 @@ public class ViewBoard extends JLayeredPane {
 	for (ATileMove aMove : moves) {
 	    if (aMove == null) continue;
 	    if (aMove.isDeleted()) {
-		if (aMove.getPrvLoc() == null) remove(getTileAt(aMove.getCurLoc())); // A tile that didn't move but was merged into
-		else remove(getTileAt(aMove.getPrvLoc())); // A merged into tile
+		if (aMove.getPrevLoc() == null) remove(getTileAt(aMove.getCurLoc())); // A tile that didn't move but was merged into
+		else remove(getTileAt(aMove.getPrevLoc())); // A merged into tile
 	    } else {
-		if (aMove.getPrvLoc() == null) add(new ViewTile(aMove.getCurVal(), coord2Point(aMove.getCurLoc())), TILELAYER); // A newly added tile
+		if (aMove.getPrevLoc() == null) add(new ViewTile(aMove.getCurVal(), coordinateToPoint(aMove.getCurLoc())), TILELAYER); // A newly added tile
 		else {	// A tile that has moved and potentially merged into another tile
-		    ViewTile tile = getTileAt(aMove.getPrvLoc());
+		    ViewTile tile = getTileAt(aMove.getPrevLoc());
 		    if (tile != null) {
-			Point startPnt = coord2Point(aMove.getPrvLoc());
-			Point endPnt = coord2Point(aMove.getCurLoc());
-			tile.moveTileBy(endPnt.x - startPnt.x, endPnt.y - startPnt.y);
+			Point startPoint = coordinateToPoint(aMove.getPrevLoc());
+			Point endPoint = coordinateToPoint(aMove.getCurLoc());
+			tile.moveTileBy(endPoint.x - startPoint.x, endPoint.y - startPoint.y);
 			tile.setTileVal(aMove.getCurVal());
 		    }
 		}
@@ -133,7 +128,7 @@ public class ViewBoard extends JLayeredPane {
 
     private ViewTile getTileAt(Point pnt) {
 	Component[] allComps = getComponentsInLayer(TILELAYER);
-	Component potentialTile = getComponentAt(coord2Point(pnt));
+	Component potentialTile = getComponentAt(coordinateToPoint(pnt));
 	for (int i = 0; i < allComps.length; i++)
 	    if (allComps[i].equals(potentialTile) && potentialTile instanceof ViewTile) return (ViewTile) potentialTile;
 	return null;
@@ -144,14 +139,15 @@ public class ViewBoard extends JLayeredPane {
      * @param newTiles A list of tiles to be added to the board.
      */
     public void addTiles(List<ATileMove> newTiles) {
+  // using for-each loop
 	for (ATileMove aTile : newTiles)
-	    add(new ViewTile(aTile.getCurVal(), coord2Point(aTile.getCurLoc())), TILELAYER);
+	    add(new ViewTile(aTile.getCurVal(), coordinateToPoint(aTile.getCurLoc())), TILELAYER);
 	repaint();
     }
 
-    private Point coord2Point(Point coord) {
-	int x = coord.x * (ViewTile.getActualWidth() + tileBorderH) + tileBorderH;
-	int y = coord.y * (ViewTile.getActualHeight() + tileBorderV) + tileBorderV;
+    private Point coordinateToPoint(Point coordinate) {
+	int x = coordinate.x * (ViewTile.getActualWidth() + tileBorderH) + tileBorderH;
+	int y = coordinate.y * (ViewTile.getActualHeight() + tileBorderV) + tileBorderV;
 	return new Point(x, y);
     }
 

@@ -19,12 +19,12 @@ class ClearSansLoader {
     protected Font importFont(String fontType) {
 	Font font;
 	try {
-	    InputStream is = getClass().getClassLoader().getResourceAsStream("res/clear-sans/ClearSans-" + fontType + ".ttf");
-	    if (is == null) {	// null when working in eclipse...
+	    InputStream in = getClass().getClassLoader().getResourceAsStream("res/clear-sans/ClearSans-" + fontType + ".ttf");
+	    if (in == null) {	// null when working in eclipse...
 		font = Font.createFont(Font.TRUETYPE_FONT, new File("res/clear-sans/ClearSans-" + fontType + ".ttf"));
 	    } else {	// not null when exported to a .jar
-		font = Font.createFont(Font.TRUETYPE_FONT, is);
-		is.close();
+		font = Font.createFont(Font.TRUETYPE_FONT, in);
+				in.close();
 	    }
 	} catch (FontFormatException | IOException e) {
 	    if (fontType.equalsIgnoreCase("bold")) font = new Font("Verdana", Font.BOLD, 1);

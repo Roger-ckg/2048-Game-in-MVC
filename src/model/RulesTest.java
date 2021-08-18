@@ -16,7 +16,7 @@ import controller.Direction;
 import controller.ATileMove;
 
 /**
- * Unit tests using JUnit to test the {@link Rules.java rules} of the game.
+ * Unit tests using JUnit to test the {@link Rules rules} of the game.
  */
 public class RulesTest {
     private Board board, ansBoard;
@@ -38,15 +38,15 @@ public class RulesTest {
 						assertTrue("incorrect height", board.getHeight() == y);
 						assertTrue("incorrect initial score", board.getScore() == 0);
 						assertTrue("incorrect initial highScore", board.getHighScore() == 0);
-						if (moves.size() < Rules.DFLT_STARTNUM) fail("less than 2 tiles were added to the board");
-						else if (moves.size() > Rules.DFLT_STARTNUM) fail("More than 2 tiles were added to the board");
+						if (moves.size() < Rules.DEFAULT_STARTNUM) fail("less than 2 tiles were added to the board");
+						else if (moves.size() > Rules.DEFAULT_STARTNUM) fail("More than 2 tiles were added to the board");
 						testList.clear();
 						for (ATileMove aMove : moves) {
 					testTileValues(aMove, true, 0, null, 0, null, false, false);
 					testList.add(aMove.getCurLoc());
 						}
 				} catch (IllegalArgumentException e) {
-						if (x >= Rules.DFLT_WIDTH && y >= Rules.DFLT_HEIGHT) fail("An error should not have been thrown for the width " + x + " or the height " + y);
+						if (x >= Rules.DEFAULT_WIDTH && y >= Rules.DEFAULT_HEIGHT) fail("An error should not have been thrown for the width " + x + " or the height " + y);
 				}
 					}
 			}
@@ -69,15 +69,15 @@ public class RulesTest {
 						assertTrue("incorrect height", board.getHeight() == y);
 						assertTrue("incorrect initial score", board.getScore() == 0);
 						assertTrue("highscore should carry over after a restart", board.getHighScore() == previousHighScore);
-						if (moves.size() < Rules.DFLT_STARTNUM) fail("less than 2 tiles were added to the board");
-						else if (moves.size() > Rules.DFLT_STARTNUM) fail("More than 2 tiles were added to the board");
+						if (moves.size() < Rules.DEFAULT_STARTNUM) fail("less than 2 tiles were added to the board");
+						else if (moves.size() > Rules.DEFAULT_STARTNUM) fail("More than 2 tiles were added to the board");
 						testList.clear();
 						for (ATileMove aMove : moves) {
 					testTileValues(aMove, true, 0, null, 0, null, false, false);
 					testList.add(aMove.getCurLoc());
 						}
 				} catch (IllegalArgumentException e) {
-						if (x >= Rules.DFLT_WIDTH && y >= Rules.DFLT_HEIGHT) fail("An error should not have been thrown for the width " + x + " or the height " + y);
+						if (x >= Rules.DEFAULT_WIDTH && y >= Rules.DEFAULT_HEIGHT) fail("An error should not have been thrown for the width " + x + " or the height " + y);
 				}
 					}
 			}
@@ -444,8 +444,8 @@ public class RulesTest {
 	int tmpScore = rand.nextInt(100000);// random large number
 	board.setScore(tmpScore);
 	board.setHighScore(tmpScore);
-	ansBoard.setScore(tmpScore + Rules.DFLT_WINVALUE);// will gain 2048 points after a game winning merge
-	ansBoard.setHighScore(tmpScore + Rules.DFLT_WINVALUE);
+	ansBoard.setScore(tmpScore + Rules.DEFAULT_WINVALUE);// will gain 2048 points after a game winning merge
+	ansBoard.setHighScore(tmpScore + Rules.DEFAULT_WINVALUE);
 	ansBoard.setGameWon(true);
 	Point pnt1 = new Point(rand.nextInt(width), rand.nextInt(height));
 	Point pnt2 = null;
@@ -453,23 +453,23 @@ public class RulesTest {
 	do {
 	    pnt2 = new Point(pnt1.x, rand.nextInt(height)); // points are in same column
 	} while (pnt1.equals(pnt2));
-	board.setCell(pnt1, Rules.DFLT_WINVALUE / 2);
-	board.setCell(pnt2, Rules.DFLT_WINVALUE / 2);
+	board.setCell(pnt1, Rules.DEFAULT_WINVALUE / 2);
+	board.setCell(pnt2, Rules.DEFAULT_WINVALUE / 2);
 	moves = Rules.makeMove(board, Direction.DOWN); // points are in same column, so do a vertical move
 	moveToPnt = new Point(pnt1.x, height - 1);
-	ansBoard.setCell(moveToPnt, Rules.DFLT_WINVALUE);
+	ansBoard.setCell(moveToPnt, Rules.DEFAULT_WINVALUE);
 	compareBoardsAfterMove(true);
 	assertTrue("After move list should have size = 3", moves.size() == 3);
-	ATileMove tile1 = new ATileMove(pnt1, Rules.DFLT_WINVALUE / 2);
-	ATileMove tile2 = new ATileMove(pnt2, Rules.DFLT_WINVALUE / 2);
+	ATileMove tile1 = new ATileMove(pnt1, Rules.DEFAULT_WINVALUE / 2);
+	ATileMove tile2 = new ATileMove(pnt2, Rules.DEFAULT_WINVALUE / 2);
 	if (pnt1.y > pnt2.y) {
 	    if (pnt1.y != moveToPnt.y) tile1.move(moveToPnt);
 	    tile1.delete();
-	    tile2.merge(moveToPnt, Rules.DFLT_WINVALUE);
+	    tile2.merge(moveToPnt, Rules.DEFAULT_WINVALUE);
 	} else {
 	    if (pnt2.y != moveToPnt.y) tile2.move(moveToPnt);
 	    tile2.delete();
-	    tile1.merge(moveToPnt, Rules.DFLT_WINVALUE);
+	    tile1.merge(moveToPnt, Rules.DEFAULT_WINVALUE);
 	}
 	assertTrue(moves.contains(tile1)); // error?
 	moves.remove(tile1);
@@ -533,7 +533,7 @@ public class RulesTest {
     }
 
     private void insertRandomBoardInfo(Board board) {
-	board.setSize(rand.nextInt(width - Rules.DFLT_WIDTH) + Rules.DFLT_WIDTH, rand.nextInt(height - Rules.DFLT_HEIGHT) + Rules.DFLT_HEIGHT);
+	board.setSize(rand.nextInt(width - Rules.DEFAULT_WIDTH) + Rules.DEFAULT_WIDTH, rand.nextInt(height - Rules.DEFAULT_HEIGHT) + Rules.DEFAULT_HEIGHT);
 	board.setScore(rand.nextInt(Integer.MAX_VALUE));
 	board.setHighScore(rand.nextInt(Integer.MAX_VALUE - board.getScore() + 1));
 	board.setGameOver(rand.nextBoolean());
@@ -547,21 +547,21 @@ public class RulesTest {
 	if (isNew) {
 	    assertTrue("Incorrect curVal for a New Tile", tile.getCurVal() == 2 || tile.getCurVal() == 4);
 	    assertFalse("Incorrect curLoc", tile.getCurLoc().equals(curLoc));	// enforce where a new tile cant be
-	    assertTrue("New Tile shouldnt have a prvVal", tile.getPrvVal() == 0);
-	    assertTrue("New Tile shouldnt have a prvLoc", tile.getPrvLoc() == null);
+	    assertTrue("New Tile shouldnt have a prvVal", tile.getPrevVal() == 0);
+	    assertTrue("New Tile shouldnt have a prvLoc", tile.getPrevLoc() == null);
 	    assertTrue("Incorrect isMerged state for a New Tile", tile.isMerged() == false);
 	    assertTrue("Incorrect isDeleted state for a New TIle", tile.isDeleted() == false);
 	} else {
 	    if (isDeleted) {
 		assertTrue("Incorrect curVal", tile.getCurVal() == 0); // assumes that deleted tiles have their curVal set to 0
-		if (tile.getPrvLoc() == null) assertTrue(prvLoc == null); // it was merged into while on the edge, thus no prvLoc
-		else assertTrue("Incorrect prvLoc", tile.getPrvLoc().equals(prvLoc)); // it was merged into but not on an edge, thus has prvLoc
+		if (tile.getPrevLoc() == null) assertTrue(prvLoc == null); // it was merged into while on the edge, thus no prvLoc
+		else assertTrue("Incorrect prvLoc", tile.getPrevLoc().equals(prvLoc)); // it was merged into but not on an edge, thus has prvLoc
 	    } else {
 		assertTrue("Incorrect curVal", tile.getCurVal() == curVal);
-		assertTrue("Incorrect prvLoc", tile.getPrvLoc().equals(prvLoc));
+		assertTrue("Incorrect prvLoc", tile.getPrevLoc().equals(prvLoc));
 	    }
 	    assertTrue("Incorrect curLoc", tile.getCurLoc().equals(curLoc));
-	    assertTrue("Incorrect prvVal", tile.getPrvVal() == prvVal);
+	    assertTrue("Incorrect prvVal", tile.getPrevVal() == prvVal);
 	    assertTrue("Incorrect isMerged state", tile.isMerged() == isMerged);
 	    assertTrue("Incorrect isDeleted state", tile.isDeleted() == isDeleted);
 	}
