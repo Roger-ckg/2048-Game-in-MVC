@@ -1,23 +1,13 @@
 package view;
 
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.swing.JComboBox;
-
 import controller.ControllerInterface;
 import controller.Direction;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Listens for certain user actions in the Environment, primarily from the keyboard and the mouse, and then sends those actions to the controller of this game.
@@ -47,7 +37,7 @@ public class ViewListener extends KeyAdapter implements MouseListener, ActionLis
      * Captures keyPressed events from the environment, interprets the events as movement directions or as a restart command, if possible, then communicates them to
      * the controller.
      * @param e The key event captured from the keyboard.
-     * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+     * @see java.awt.event.KeyListener#keyPressed(KeyEvent)
      */
     @Override
     public void keyPressed(KeyEvent e) {
@@ -63,7 +53,7 @@ public class ViewListener extends KeyAdapter implements MouseListener, ActionLis
     /**
      * Captures mousePressed events from the environment and saves its location on the screen.
      * @param e The mousePressed event captured from the mouse.
-     * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+     * @see MouseListener#mousePressed(MouseEvent)
      */
     @Override
     public void mousePressed(MouseEvent e) {
@@ -74,7 +64,7 @@ public class ViewListener extends KeyAdapter implements MouseListener, ActionLis
      * Captures mouseReleased events from the environment then communicates the direction moved between the last mousePressed event and this event to the controller,
      * unless the distance between the two events is <= 20 px.
      * @param e The mouseReleased event captured from the mouse.
-     * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+     * @see MouseListener#mouseReleased(MouseEvent)
      */
     @Override
     public void mouseReleased(MouseEvent e) {
@@ -95,7 +85,7 @@ public class ViewListener extends KeyAdapter implements MouseListener, ActionLis
     /**
      * Captures ActionEvents and sends their commands to the controller, if valid.
      * @param e A captured ActionEvent
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * @see ActionListener#actionPerformed(ActionEvent)
      */
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -106,7 +96,7 @@ public class ViewListener extends KeyAdapter implements MouseListener, ActionLis
     /**
      * Captures itemStateChanged events from JComboBoxes and saves their values until the next restart game event.
      * @param e A captured ItemEvent.
-     * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
+     * @see ItemListener#itemStateChanged(ItemEvent)
      */
     @Override
     public void itemStateChanged(ItemEvent e) {
@@ -123,7 +113,7 @@ public class ViewListener extends KeyAdapter implements MouseListener, ActionLis
 
     /**
      * Captures a windowClosing event and informs the controller to end the game.
-     * @see java.awt.event.WindowListener#windowClosing(java.awt.event.WindowEvent)
+     * @see WindowListener#windowClosing(WindowEvent)
      */
     @Override
     public void windowClosing(WindowEvent arg) {
@@ -132,7 +122,7 @@ public class ViewListener extends KeyAdapter implements MouseListener, ActionLis
 
     /**
      * Captures a windowClosed event and informs the controller to end the game.
-     * @see java.awt.event.WindowListener#windowClosed(java.awt.event.WindowEvent)
+     * @see WindowListener#windowClosed(WindowEvent)
      */
     @Override
     public void windowClosed(WindowEvent arg) {

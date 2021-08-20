@@ -1,11 +1,13 @@
 package view;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import controller.ControllerInterface;
+import controller.Direction;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.Field;
@@ -13,16 +15,8 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Random;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import controller.ControllerInterface;
-import controller.Direction;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests using JUnit to test the {@link ViewListener User Input Listener} of the game.

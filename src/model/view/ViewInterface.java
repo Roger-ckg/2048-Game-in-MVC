@@ -1,8 +1,8 @@
 package view;
 
-import java.util.List;
-
 import controller.ATileMove;
+
+import java.util.List;
 
 /**
  * An interface describing tasks that the View shall be responsible for.

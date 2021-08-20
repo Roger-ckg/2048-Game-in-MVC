@@ -1,24 +1,11 @@
 package view;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Toolkit;
-import java.util.List;
-
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
 import controller.ATileMove;
 import controller.ControllerInterface;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.List;
 
 /**
  * A visualization of the game.
@@ -28,7 +15,7 @@ public class BasicGUI extends JFrame implements ViewInterface {
     private static final int MINSIZE = 4, MAXSIZE = 10;
     private static final int containerSpacing = 10, taskBarSize = 75;
     private static final String gameName = "2048";
-    private static final Color backgroundColor = new Color(250, 248, 239);
+    private static final Color backgroundColor = new Color(0, 248, 239);
     private static final Color defaultTextColor = new Color(119, 110, 101);
     private static final Dimension scrnSize = Toolkit.getDefaultToolkit().getScreenSize();
     private ViewListener listener;
@@ -83,7 +70,7 @@ public class BasicGUI extends JFrame implements ViewInterface {
 
 	// create a container to hold a basic message to the player and a "start new game" button.
 	above = new Box(BoxLayout.X_AXIS);
-	JLabel msg = new JLabel("<html>Merge the numbers together to get <b>a 2048 tile!</b></html>");
+	JLabel msg = new JLabel("<html>Merge same numbers together to reach <b>2048!</b></html>");
 	msg.setFont(font.deriveFont(18f));
 	msg.setForeground(defaultTextColor);
 	above.add(msg);
@@ -93,7 +80,7 @@ public class BasicGUI extends JFrame implements ViewInterface {
 	newGame.setFocusable(false);
 	newGame.setFont(boldFont.deriveFont(18f));
 	newGame.setForeground(new Color(249, 246, 242));
-	newGame.setBackground(new Color(143, 122, 102));
+	newGame.setBackground(new Color(230, 122, 102));
 	newGame.setActionCommand("restart");
 	newGame.addActionListener(listener);
 	above.add(newGame);

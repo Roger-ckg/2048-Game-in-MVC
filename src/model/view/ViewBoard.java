@@ -1,15 +1,10 @@
 package view;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.util.List;
-
-import javax.swing.JLayeredPane;
-
 import controller.ATileMove;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.List;
 
 /**
  * Controls the look of the board, where all tiles are placed, and how they are moved.
@@ -26,7 +21,7 @@ public class ViewBoard extends JLayeredPane {
      * Constructs this board with the given dimensions.
      */
     public ViewBoard() {
-	setBackground(new Color(187, 173, 160));
+	setBackground(new Color(187, 120, 160));
 	setOpaque(true);
     }
 
